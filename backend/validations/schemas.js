@@ -6,8 +6,8 @@ const loginSchema = z.object({
 });
 
 const memberSchema = z.object({
-    first_name: z.string().min(2, 'First name is required'),
-    last_name: z.string().min(2, 'Last name is required'),
+    firstName: z.string().min(2, 'First name is required'),
+    lastName: z.string().min(2, 'Last name is required'),
     email: z.string().email('Invalid email format').optional().or(z.literal('')),
     phone: z.string().min(10, 'Phone must be at least 10 digits'),
     gender: z.enum(['male', 'female', 'other']).optional(),

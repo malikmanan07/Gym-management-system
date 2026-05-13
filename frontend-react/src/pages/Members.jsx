@@ -19,8 +19,8 @@ const Members = () => {
     const [showModal, setShowModal] = useState(false);
     const [editId, setEditId] = useState(null);
     const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         phone: '',
         gender: 'male',
@@ -83,8 +83,8 @@ const Members = () => {
             setEditId(member.id);
             const nameParts = (member.fullName || '').split(' ');
             setFormData({
-                first_name: nameParts[0] || '',
-                last_name: nameParts.slice(1).join(' ') || '',
+                firstName: nameParts[0] || '',
+                lastName: nameParts.slice(1).join(' ') || '',
                 email: member.email || '',
                 phone: member.phone || '',
                 gender: member.gender || 'male',
@@ -92,7 +92,7 @@ const Members = () => {
             });
         } else {
             setEditId(null);
-            setFormData({ first_name: '', last_name: '', email: '', phone: '', gender: 'male', status: 'active' });
+            setFormData({ firstName: '', lastName: '', email: '', phone: '', gender: 'male', status: 'active' });
         }
         setShowModal(true);
     };
@@ -269,13 +269,13 @@ const Members = () => {
                             <Col md={6}>
                                 <Form.Group>
                                     <Form.Label className="small fw-bold text-secondary">FIRST NAME</Form.Label>
-                                    <Form.Control required value={formData.first_name} onChange={(e) => setFormData({...formData, first_name: e.target.value})} />
+                                    <Form.Control required value={formData.firstName} onChange={(e) => setFormData({...formData, firstName: e.target.value})} />
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
                                 <Form.Group>
                                     <Form.Label className="small fw-bold text-secondary">LAST NAME</Form.Label>
-                                    <Form.Control required value={formData.last_name} onChange={(e) => setFormData({...formData, last_name: e.target.value})} />
+                                    <Form.Control required value={formData.lastName} onChange={(e) => setFormData({...formData, lastName: e.target.value})} />
                                 </Form.Group>
                             </Col>
                             <Col md={12}>
