@@ -54,7 +54,7 @@ class DashboardService {
 
             const revenueData = await Payment.findAll({
                 attributes: [
-                    [sequelize.fn('MONTHNAME', sequelize.col('paymentDate')), 'month'],
+                    [sequelize.fn('MONTHNAME', sequelize.col('payment_date')), 'month'],
                     [sequelize.fn('SUM', sequelize.col('amount')), 'total']
                 ],
                 where: {
@@ -63,13 +63,13 @@ class DashboardService {
                     }
                 },
                 group: [
-                    sequelize.fn('YEAR', sequelize.col('paymentDate')),
-                    sequelize.fn('MONTH', sequelize.col('paymentDate')),
-                    sequelize.fn('MONTHNAME', sequelize.col('paymentDate'))
+                    sequelize.fn('YEAR', sequelize.col('payment_date')),
+                    sequelize.fn('MONTH', sequelize.col('payment_date')),
+                    sequelize.fn('MONTHNAME', sequelize.col('payment_date'))
                 ],
                 order: [
-                    [sequelize.fn('YEAR', sequelize.col('paymentDate')), 'ASC'],
-                    [sequelize.fn('MONTH', sequelize.col('paymentDate')), 'ASC']
+                    [sequelize.fn('YEAR', sequelize.col('payment_date')), 'ASC'],
+                    [sequelize.fn('MONTH', sequelize.col('payment_date')), 'ASC']
                 ],
                 raw: true
             }).catch(() => []);
