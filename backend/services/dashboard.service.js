@@ -52,13 +52,27 @@ class DashboardService {
                 return Math.round(((current - previous) / previous) * 100);
             };
 
-            const [revenueData] = await sequelize.query(`
-                SELECT MONTHNAME(payment_date) as month, SUM(amount) as total
-                FROM payments
-                WHERE payment_date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-                GROUP BY MONTH(payment_date), MONTHNAME(payment_date), YEAR(payment_date)
-                ORDER BY YEAR(payment_date) ASC, MONTH(payment_date) ASC
-            `).catch(() => [[]]);
+            const revenueData = await Payment.findAll({
+                attributes: [
+                    [sequelize.fn('MONTHNAME', sequelize.col('paymentDate')), 'month'],
+                    [sequelize.fn('SUM', sequelize.col('amount')), 'total']
+                ],
+                where: {
+                    paymentDate: {
+                        [Op.gte]: sequelize.literal('DATE_SUB(CURDATE(), INTERVAL 6 MONTH)')
+                    }
+                },
+                group: [
+                    sequelize.fn('YEAR', sequelize.col('paymentDate')),
+                    sequelize.fn('MONTH', sequelize.col('paymentDate')),
+                    sequelize.fn('MONTHNAME', sequelize.col('paymentDate'))
+                ],
+                order: [
+                    [sequelize.fn('YEAR', sequelize.col('paymentDate')), 'ASC'],
+                    [sequelize.fn('MONTH', sequelize.col('paymentDate')), 'ASC']
+                ],
+                raw: true
+            }).catch(() => []);
 
             const membershipDist = await MembershipPlan.findAll({
                 attributes: [
