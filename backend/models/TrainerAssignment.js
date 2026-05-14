@@ -3,8 +3,16 @@ const sequelize = require('../config/db.config');
 
 const TrainerAssignment = sequelize.define('TrainerAssignment', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    trainer_id: { type: DataTypes.INTEGER, allowNull: false },
-    member_id: { type: DataTypes.INTEGER, allowNull: false }
+    trainerId: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+        field: 'trainer_id'
+    },
+    memberId: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+        field: 'member_id'
+    }
 }, {
     tableName: 'trainer_assignments',
     uniqueKeys: {

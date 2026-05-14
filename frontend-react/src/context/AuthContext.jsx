@@ -24,10 +24,18 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async ({ username, password }) => {
-        const response = await api.post('/auth/login', { username, password });
-        localStorage.setItem('gym_token', response.token);
-        setUser(response.user);
-        return response;
+        try {
+            const response = await api.post('/auth/login', { username, password });
+            if (response && response.token) {
+                localStorage.setItem('gym_token', response.token);
+                setUser(response.user);
+                return response;
+            }
+            throw new Error('Authentication failed: No token received');
+        } catch (err) {
+            // Rethrow the error so it can be caught by the component
+            throw err;
+        }
     };
 
     const logout = () => {

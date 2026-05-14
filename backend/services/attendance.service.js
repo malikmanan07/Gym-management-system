@@ -48,7 +48,7 @@ class AttendanceService {
             const include = {
                 model: Member,
                 attributes: ['firstName', 'lastName'],
-                required: false
+                required: true
             };
 
             if (search) {

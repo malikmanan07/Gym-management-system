@@ -101,7 +101,9 @@ class MemberService {
         try {
             const member = await Member.findByPk(id);
             if (!member) throw new Error('Member not found');
-            return await member.destroy();
+            
+            // Professional Deactivation instead of deletion
+            return await member.update({ status: 'inactive' });
         } catch (err) {
             logger.error('MemberService.deleteMember Error:', err);
             throw err;

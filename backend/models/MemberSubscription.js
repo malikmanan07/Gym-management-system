@@ -3,10 +3,26 @@ const sequelize = require('../config/db.config');
 
 const MemberSubscription = sequelize.define('MemberSubscription', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    member_id: { type: DataTypes.INTEGER, allowNull: false },
-    plan_id: { type: DataTypes.INTEGER, allowNull: false },
-    start_date: { type: DataTypes.DATEONLY, allowNull: false },
-    end_date: { type: DataTypes.DATEONLY, allowNull: false },
+    memberId: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+        field: 'member_id'
+    },
+    planId: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+        field: 'plan_id'
+    },
+    startDate: { 
+        type: DataTypes.DATEONLY, 
+        allowNull: false,
+        field: 'start_date'
+    },
+    endDate: { 
+        type: DataTypes.DATEONLY, 
+        allowNull: false,
+        field: 'end_date'
+    },
     status: { type: DataTypes.ENUM('active', 'expired', 'cancelled'), defaultValue: 'active' }
 }, {
     tableName: 'member_subscriptions',

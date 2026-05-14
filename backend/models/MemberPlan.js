@@ -3,9 +3,20 @@ const sequelize = require('../config/db.config');
 
 const MemberPlan = sequelize.define('MemberPlan', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    member_id: { type: DataTypes.INTEGER, allowNull: false, unique: true },
-    workout_plan_id: { type: DataTypes.INTEGER },
-    diet_plan_id: { type: DataTypes.INTEGER }
+    memberId: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false, 
+        unique: true,
+        field: 'member_id'
+    },
+    workoutPlanId: { 
+        type: DataTypes.INTEGER,
+        field: 'workout_plan_id'
+    },
+    dietPlanId: { 
+        type: DataTypes.INTEGER,
+        field: 'diet_plan_id'
+    }
 }, {
     tableName: 'member_plans',
     timestamps: true,

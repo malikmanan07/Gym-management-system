@@ -6,9 +6,9 @@ class DashboardService {
     async getDashboardStats() {
         try {
             // Current Stats
-            const totalMembers = await Member.count().catch(() => 0);
+            const totalMembers = await Member.count({ where: { status: 'active' } }).catch(() => 0);
             const activeMembers = await Member.count({ where: { status: 'active' } }).catch(() => 0);
-            
+
             const currentMonthRevenue = await Payment.sum('amount', {
                 where: {
                     paymentDate: {
@@ -21,12 +21,14 @@ class DashboardService {
             }).catch(() => 0) || 0;
 
             const attendanceToday = await Attendance.count({
-                where: { date: sequelize.literal('CURDATE()') }
+                include: [{ model: Member, where: { status: 'active' }, required: true }],
+                where: { date: { [Op.eq]: sequelize.literal('CURDATE()') } }
             }).catch(() => 0);
 
             // Growth Calculations (Previous Period Data)
             const prevMonthMembers = await Member.count({
                 where: {
+                    status: 'active',
                     createdAt: { [Op.lt]: sequelize.literal('DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH)') }
                 }
             }).catch(() => 0);
@@ -43,7 +45,8 @@ class DashboardService {
             }).catch(() => 0) || 0;
 
             const attendanceYesterday = await Attendance.count({
-                where: { date: sequelize.literal('DATE_SUB(CURDATE(), INTERVAL 1 DAY)') }
+                include: [{ model: Member, where: { status: 'active' }, required: true }],
+                where: { date: { [Op.eq]: sequelize.literal('DATE_SUB(CURDATE(), INTERVAL 1 DAY)') } }
             }).catch(() => 0);
 
             // Helper to calculate percentage growth
@@ -83,6 +86,7 @@ class DashboardService {
                     model: MemberSubscription,
                     attributes: [],
                     where: { status: 'active' },
+                    include: [{ model: Member, where: { status: 'active' }, required: true }],
                     required: false
                 }],
                 group: ['MembershipPlan.id', 'MembershipPlan.name'],

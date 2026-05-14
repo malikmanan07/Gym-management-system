@@ -31,6 +31,24 @@ Payment.belongsTo(Member, { foreignKey: 'member_id' });
 Member.belongsTo(WorkoutPlan, { foreignKey: 'workout_plan_id', as: 'workoutPlan', onDelete: 'SET NULL' });
 Member.belongsTo(DietPlan, { foreignKey: 'diet_plan_id', as: 'dietPlan', onDelete: 'SET NULL' });
 
+// Trainer & Members
+Trainer.hasMany(TrainerAssignment, { foreignKey: 'trainer_id', onDelete: 'CASCADE' });
+TrainerAssignment.belongsTo(Trainer, { foreignKey: 'trainer_id' });
+
+Member.hasMany(TrainerAssignment, { foreignKey: 'member_id', onDelete: 'CASCADE' });
+TrainerAssignment.belongsTo(Member, { foreignKey: 'member_id' });
+
+// Member & MemberPlan
+Member.hasOne(MemberPlan, { foreignKey: 'member_id', onDelete: 'CASCADE' });
+MemberPlan.belongsTo(Member, { foreignKey: 'member_id' });
+
+// Workout & Diet Plans creation by User
+User.hasMany(WorkoutPlan, { foreignKey: 'created_by' });
+WorkoutPlan.belongsTo(User, { foreignKey: 'created_by', as: 'creator' });
+
+User.hasMany(DietPlan, { foreignKey: 'created_by' });
+DietPlan.belongsTo(User, { foreignKey: 'created_by', as: 'creator' });
+
 module.exports = {
     sequelize,
     User,

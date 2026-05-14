@@ -10,12 +10,20 @@ exports.login = async (req, res, next) => {
 
         const user = await User.findOne({ where: { username } });
         if (!user) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+            return res.status(401).json({ success: false, message: 'Invalid username or password' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        // Use a safe comparison
+        let isMatch = false;
+        try {
+            isMatch = await bcrypt.compare(password, user.password);
+        } catch (err) {
+            logger.error(`Bcrypt error for user ${username}: ${err.message}`);
+            isMatch = false;
+        }
+        
         if (!isMatch) {
-            return res.status(401).json({ success: false, message: 'Invalid credentials' });
+            return res.status(401).json({ success: false, message: 'Invalid username or password' });
         }
 
         const token = jwt.sign(

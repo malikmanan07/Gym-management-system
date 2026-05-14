@@ -21,6 +21,10 @@ const DietPlan = sequelize.define('DietPlan', {
     meals: {
         type: DataTypes.JSON, // Daily meal structure
         defaultValue: []
+    },
+    createdBy: {
+        type: DataTypes.INTEGER,
+        field: 'created_by'
     }
 }, {
     tableName: 'diet_plans',

@@ -21,6 +21,10 @@ const WorkoutPlan = sequelize.define('WorkoutPlan', {
     exercises: {
         type: DataTypes.JSON, // Array of exercises
         defaultValue: []
+    },
+    createdBy: {
+        type: DataTypes.INTEGER,
+        field: 'created_by'
     }
 }, {
     tableName: 'workout_plans',

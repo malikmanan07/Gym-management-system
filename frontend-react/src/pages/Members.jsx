@@ -10,7 +10,7 @@ const Members = () => {
     const [members, setMembers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('active'); // Default to showing only active members
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const limit = 10;
@@ -140,7 +140,7 @@ const Members = () => {
         setDeleting(true);
         try {
             await api.delete(`/members/${deleteTargetId}`);
-            toast.success('Member removed.');
+            toast.success('Member deactivated and moved to directory.');
             setShowDeleteModal(false);
             fetchMembers();
         } catch (err) {
@@ -181,9 +181,10 @@ const Members = () => {
                                 value={status}
                                 onChange={(e) => setStatus(e.target.value)}
                             >
-                                <option value="">All Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="active">Show Active</option>
+                                <option value="inactive">Show Inactive</option>
+                                <option value="expired">Show Expired</option>
+                                <option value="">Show All</option>
                             </Form.Select>
                         </Col>
                         <Col md={2}>
@@ -236,15 +237,19 @@ const Members = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        <Badge bg={member?.status === 'active' ? 'success-subtle' : 'danger-subtle'} className={`px-3 py-2 border ${member?.status === 'active' ? 'text-success border-success-subtle' : 'text-danger border-danger-subtle'}`}>
+                                        <Badge bg={member?.status === 'active' ? 'success-subtle' : 'secondary-subtle'} className={`px-3 py-2 border ${member?.status === 'active' ? 'text-success border-success-subtle' : 'text-secondary border-secondary-subtle'}`}>
                                             {(member?.status || 'inactive').toUpperCase()}
                                         </Badge>
                                     </td>
                                     <td className="text-center">
                                         <div className="d-flex justify-content-center gap-2">
-                                            <Button variant="light" size="sm" className="text-secondary border shadow-sm" onClick={() => handleOpenAssignModal(member)}><ClipboardList size={16} /></Button>
-                                            <Button variant="light" size="sm" className="text-primary border shadow-sm" onClick={() => handleOpenModal(member)}><Edit size={16} /></Button>
-                                            <Button variant="light" size="sm" className="text-danger border shadow-sm" onClick={() => confirmDelete(member?.id)}><Trash2 size={16} /></Button>
+                                            <Button variant="light" size="sm" className="text-secondary border shadow-sm" title="Assign Plans" onClick={() => handleOpenAssignModal(member)}><ClipboardList size={16} /></Button>
+                                            <Button variant="light" size="sm" className="text-primary border shadow-sm" title="Edit Member" onClick={() => handleOpenModal(member)}><Edit size={16} /></Button>
+                                            {member?.status === 'active' ? (
+                                                <Button variant="light" size="sm" className="text-danger border shadow-sm" title="Deactivate" onClick={() => confirmDelete(member?.id)}><Trash2 size={16} /></Button>
+                                            ) : (
+                                                <Button variant="light" size="sm" className="text-success border shadow-sm" title="Activate" onClick={() => handleOpenModal(member)}><UserPlus size={16} /></Button>
+                                            )}
                                         </div>
                                     </td>
                                 </tr>
@@ -336,8 +341,8 @@ const Members = () => {
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered size="sm">
                 <Modal.Body className="text-center p-4">
                     <div className="text-danger mb-3"><AlertTriangle size={50} /></div>
-                    <h5 className="fw-bold">Delete Member?</h5>
-                    <p className="text-secondary small">This cannot be undone.</p>
+                    <h5 className="fw-bold">Deactivate Member?</h5>
+                    <p className="text-secondary small">This will move the member to the inactive directory. Their records and payments will be preserved for history.</p>
                     <div className="d-flex gap-2 mt-4">
                         <Button variant="light" className="flex-grow-1" onClick={() => setShowDeleteModal(false)}>No</Button>
                         <Button variant="danger" className="flex-grow-1" onClick={handleDeleteMember} disabled={deleting}>{deleting ? '...' : 'Yes'}</Button>
