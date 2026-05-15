@@ -1,7 +1,7 @@
 # Gym Management System - Comprehensive Project Report
 
 ## 1. Introduction
-The **Gym Management System** is an enterprise-grade web application developed to digitalize, streamline, and secure the daily operations of a modern fitness facility. It provides a centralized platform for managing members, trainers, attendance, financial transactions, and specialized workout/diet blueprints. The system is designed with a strong emphasis on data integrity, professional business logic, and high-level security.
+The **Gym Management System** is an enterprise-grade web application developed to digitalize, streamline, and secure the daily operations of a modern fitness facility. It provides a centralized platform for managing members, trainers, attendance, financial transactions, and specialized workout/diet blueprints. The system is designed with a strong emphasis on data integrity, professional business logic, and high-level security. This document serves as a comprehensive overview of the project, focusing heavily on the robust database architecture that powers it.
 
 ## 2. System Architecture
 The application employs a robust **N-Tier Layered Architecture** following the **Model-View-Controller (MVC)** design pattern, supplemented by a dedicated **Service Layer**.
